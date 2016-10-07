@@ -1,0 +1,82 @@
+﻿@model GuessingGameRemastered.Models.RemasteredModel
+
+@{
+    ViewBag.Title = "Guessing Game";
+}
+
+<h2>Guess What?</h2>
+
+
+
+@if (!(ViewBag.Win ?? false))
+{
+    if (ViewBag.Win != null && !ViewBag.Win)
+    { <h1>Sorry, @Model.PlayerName, @Model.Guess is are wrong. Please try again?</h1>}
+
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(
+           false, "", new { @class = "text-danger" })
+         @*come back and add in alerts*@
+
+        <div class="form-group">
+            @Html.LabelFor(
+m => m.PlayerName,
+htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(
+m => m.PlayerName,
+new { HtmlAttributes = new { @class = "form-control" } })
+              
+                  @Html.ValidationMessageFor(
+m => m.PlayerName,
+"",
+new { @class = "text-danger" })
+                @*come back and add alerts*@
+
+            </div>
+         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(
+    m => m.Guess,
+    htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.EditorFor(
+    m => m.Guess,
+    new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(
+    m => m.Guess,
+    "",
+    new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group"></div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-success"/>
+                @Html.ActionLink("Start Over", "Index", "Remastered", null, new { @class = "btn btn-danger" })
+            </div>
+        </div>
+
+    </div>
+    }
+}
+else
+{  
+@*<div class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Well done!</strong> You guessed the correct number!
+</div>*@
+<h2>That is correct, @Model.PlayerName! The answer was @Model.Guess </h2>
+}
